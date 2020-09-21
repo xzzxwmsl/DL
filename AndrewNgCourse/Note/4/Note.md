@@ -86,3 +86,10 @@ But if $a$ is too small, gradient descent can be slow to converge
 
 $\alpha=0.01，0.03，0.1，0.3，1，3，10$
 
+# 特征和多项式回归
+我们可以在原有特征的基础上定义新的特征，比如： 原有的特征是frontage与depth，那么我们可以定义新的特征Area=frontage*depth。
+
+***缺点：可能丢失特征***
+
+## PolynomialRegression(多项式回归)
+
