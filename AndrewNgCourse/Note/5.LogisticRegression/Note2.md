@@ -45,10 +45,11 @@ $$J\left( \theta  \right)=\frac{1}{2m}[\sum\limits_{i=1}^{m}{{{({h_\theta}({{x}^
 **原理**:通过惩罚参数，使得cost function的值受到$\theta$的影响加大，所以当我们进行拟合的时候，就会自动的降低$\theta$的值  
 **-当$\lambda$取值比较小时**，其惩罚力度较小，可能达不到正则化的需求($\theta$依然很大)，结果还是过拟合(overfitting)  
 **-当$\lambda$取值较大时**，惩罚比较大，所以$\theta$就会比较小，拟合的曲线就会成为类似于$h(x)=\theta_0$，这样就欠拟合了  
+根据惯例，我们不对${\theta_{0}}$ 进行惩罚。
 
 ---
 
-注：根据惯例，我们不对${\theta_{0}}$ 进行惩罚。经过正则化处理的模型与原模型的可能对比如下图所示：
+注：经过正则化处理的模型与原模型的可能对比如下图所示：
 
 
 ![](images/ea76cc5394cf298f2414f230bcded0bd.jpg)
@@ -59,3 +60,33 @@ $$J\left( \theta  \right)=\frac{1}{2m}[\sum\limits_{i=1}^{m}{{{({h_\theta}({{x}^
 但若$\lambda$ 的值太大了，那么$\theta$（不包括${\theta_{0}}$）都会趋近于0，这样我们所得到的只能是一条平行于$x$轴的直线。
 所以对于正则化，我们要取一个合理的 $\lambda$ 的值，这样才能更好的应用正则化。
 
+## Regularization in LinearRegression
+
+对于线性回归的求解，我们之前推导了两种学习算法：一种**基于梯度下降**，一种**基于正规方程**。
+
+### 正则化线性回归：
+代价函数为:
+$$J\left( \theta  \right)=\frac{1}{2m}\sum\limits_{i=1}^{m}{[({{({h_\theta}({{x}^{(i)}})-{{y}^{(i)}})}^{2}}+\lambda \sum\limits_{j=1}^{n}{\theta _{j}^{2}})]}$$
+
+如果我们要使用梯度下降法令这个代价函数最小化，因为我们未对$\theta_0​$进行正则化，所以梯度下降算法将分两种情形：
+
+$Repeat$  $until$  $convergence${
+
+​                                                   ${\theta_0}:={\theta_0}-a\frac{1}{m}\sum\limits_{i=1}^{m}{(({h_\theta}({{x}^{(i)}})-{{y}^{(i)}})x_{0}^{(i)}})$ 
+
+​                                                   ${\theta_j}:={\theta_j}-a[\frac{1}{m}\sum\limits_{i=1}^{m}{(({h_\theta}({{x}^{(i)}})-{{y}^{(i)}})x_{j}^{\left( i \right)}}+\frac{\lambda }{m}{\theta_j}]$ 
+
+​                                                             $for$ $j=1,2,...n$
+​}
+
+对上面的算法中$ j=1,2,...,n$ 时的更新式子进行调整可得：
+
+${\theta_j}:={\theta_j}(1-a\frac{\lambda }{m})-a\frac{1}{m}\sum\limits_{i=1}^{m}{({h_\theta}({{x}^{(i)}})-{{y}^{(i)}})x_{j}^{\left( i \right)}}​$ 
+可以看出，正则化线性回归的梯度下降算法的变化在于，每次都在原有算法更新规则的基础上令$\theta$值减少了一个额外的值。
+
+### 正则化正规方程
+我们同样也可以利用正规方程来求解正则化线性回归模型，方法如下所示：
+
+![](images/71d723ddb5863c943fcd4e6951114ee3.png)
+
+图中的矩阵尺寸为 $(n+1)*(n+1)$。(n为特征数量)
