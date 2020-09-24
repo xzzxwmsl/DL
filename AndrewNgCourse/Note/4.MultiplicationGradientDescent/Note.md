@@ -127,6 +127,7 @@ $$\theta=(X^TX)^{-1}X^Ty$$
 *Redundant features(linearly dependent).  
 *Too many features, with too few training sets
 E.g m$\le$n  
+*use regularization '$\lambda$'  
 ——delete some features or use regularization.
 
 ---
