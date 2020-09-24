@@ -121,11 +121,15 @@ offer a method to solve for $\theta$ analytically(解析求法).
 Normal Equation:
 $$\theta=(X^TX)^{-1}X^Ty$$
 
-what if $X^TX$ is non-invertable(Singular/defenerate)?  
+---
+
+**what if $X^TX$ is non-invertable(Singular/defenerate)?**  
 *Redundant features(linearly dependent).  
-*Too many features.  
+*Too many features, with too few training sets
 E.g m$\le$n  
 ——delete some features or use regularization.
+
+---
 
 正规方程是通过求解下面的方程来找出使得代价函数最小的参数的：$\frac{\partial}{\partial{\theta_{j}}}J\left( {\theta_{j}} \right)=0$ 。
  假设我们的训练集特征矩阵为 $X$（包含了 ${{x}_{0}}=1$）并且我们的训练集结果为向量 $y$，则利用正规方程解出向量 $\theta ={{\left( {X^T}X \right)}^{-1}}{X^{T}}y$ 。
