@@ -1,9 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
-import numpy as np
 
-# dataPath = 'C:\\Users\\13653\\Desktop\\Code\\ML\\AndrewNgCourse\\Code\\pythonReview\\data.txt'
 # 使用绝对路径读取文件
 dataPath = os.path.dirname(os.path.abspath(__file__)) + '\\data.txt'
 data = pd.read_csv(dataPath, header=None, names=['Population', 'Profit'])
