@@ -9,19 +9,18 @@
 
 $K$类分类：$S_L=k, y_i = 1$表示分到第$i$类；$(k>2)$
 
-![](../images/8f7c28297fc9ed297f42942018441850.jpg)
+![](images/8f7c28297fc9ed297f42942018441850.jpg)
 
 我们回顾逻辑回归问题中我们的代价函数为：
 
 
-$$J\left(\theta \right)=-\frac{1}{m}\left[\sum_\limits{i=1}^{m}{y}^{(i)}\log{h_\theta({x}^{(i)})}+\left(1-{y}^{(i)}\right)log\left(1-h_\theta\left({x}^{(i)}\right)\right)\right]+\frac{\lambda}{2m}\sum_\limits{j=1}^{n}{\theta_j}^{2}$$
-
+$$J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}{y}^{(i)}\log{h_\theta({x}^{(i)})}+(1-{y}^{(i)})log(1-h_\theta({x}^{(i)}))]+\frac{\lambda}{2m}\sum_{j=1}^{n}{\theta_j}^{2}$$
 
 在逻辑回归中，我们只有一个输出变量，又称标量（**scalar**），也只有一个因变量$y$，但是在神经网络中，我们可以有很多输出变量，我们的$h_\theta(x)$是一个维度为$K$的向量，并且我们训练集中的因变量也是同样维度的一个向量，因此我们的代价函数会比逻辑回归更加复杂一些，为：$\newcommand{\subk}[1]{#1_k}$ 
-$$h_\theta\left(x\right)\in \mathbb{R}^{K}$$ 
-$${\left({h_\theta}\left(x\right)\right)}_{i}={i}^{th} \text{output}$$
+$$h_\theta(x)\in \mathbb{R}^{K}$$ 
+$${({h_\theta}(x))}_{i}={i}^{th} \text{output}$$
 
-$J(\Theta) = -\frac{1}{m} \left[ \sum\limits_{i=1}^{m} \sum\limits_{k=1}^{k} {y_k}^{(i)} \log{(h_\Theta(x^{(i)}))} + \left( 1 - y_k^{(i)} \right) \log \left( 1- {\left( h_\Theta \left( x^{(i)} \right) \right)} \right) \right] + \frac{\lambda}{2m} \sum\limits_{l=1}^{L-1} \sum\limits_{i=1}^{s_l} \sum\limits_{j=1}^{s_{l+1}} \left( \Theta_{ji}^{(l)} \right)^2$
+$J(\Theta) = -\frac{1}{m} [ \sum\limits_{i=1}^{m} \sum\limits_{k=1}^{k} {y_k}^{(i)} \log{(h_\Theta(x^{(i)}))} + ( 1 - y_k^{(i)} ) \log ( 1- {( h_\Theta ( x^{(i)} ) )} ) ] + \frac{\lambda}{2m} \sum\limits_{l=1}^{L-1} \sum\limits_{i=1}^{s_l} \sum\limits_{j=1}^{s_{l+1}} ( \Theta_{ji}^{(l)} )^2$
 
 这个看起来复杂很多的代价函数背后的思想还是一样的，我们希望通过代价函数来观察算法预测的结果与真实情况的误差有多大，唯一不同的是，对于每一行特征，我们都会给出$K​$个预测，基本上我们可以利用循环，对每一行特征都预测$K​$个不同结果，然后在利用循环在$K​$个预测中选择可能性最高的一个，将其与$y​$中的实际数据进行比较。
 
@@ -29,12 +28,12 @@ $J(\Theta) = -\frac{1}{m} \left[ \sum\limits_{i=1}^{m} \sum\limits_{k=1}^{k} {y_
 
 
 # 反向传播算法
-之前我们在计算神经网络预测结果的时候我们采用了一种正向传播方法，我们从第一层开始正向一层一层进行计算，直到最后一层的$h_{\theta}\left(x\right)$。
+之前我们在计算神经网络预测结果的时候我们采用了一种正向传播方法，我们从第一层开始正向一层一层进行计算，直到最后一层的$h_{\theta}(x)$。
 
-现在，为了计算代价函数的偏导数$\frac{\partial}{\partial\Theta^{(l)}_{ij}}J\left(\Theta\right)$，我们需要采用一种反向传播算法，也就是首先计算最后一层的误差，然后再一层一层反向求出各层的误差，直到倒数第二层。
+现在，为了计算代价函数的偏导数$\frac{\partial}{\partial\Theta^{(l)}_{ij}}J(\Theta)$，我们需要采用一种反向传播算法，也就是首先计算最后一层的误差，然后再一层一层反向求出各层的误差，直到倒数第二层。
 以一个例子来说明反向传播算法。
 
-假设我们的训练集只有一个样本$\left({x}^{(1)},{y}^{(1)}\right)$，我们的神经网络是一个四层的神经网络，其中$K=4，S_{L}=4，L=4$：
+假设我们的训练集只有一个样本$({x}^{(1)},{y}^{(1)})$，我们的神经网络是一个四层的神经网络，其中$K=4，S_{L}=4，L=4$：
 
 前向传播算法：
 
@@ -44,7 +43,7 @@ $J(\Theta) = -\frac{1}{m} \left[ \sum\limits_{i=1}^{m} \sum\limits_{k=1}^{k} {y_
 
 我们从最后一层的误差开始计算，误差是激活单元的预测（${a^{(4)}}$）与实际值（$y^k$）之间的误差，（$k=1:k$）。
 我们用$\delta$来表示误差，则：$\delta^{(4)}=a^{(4)}-y$
-我们利用这个误差值来计算前一层的误差：$\delta^{(3)}=\left({\Theta^{(3)}}\right)^{T}\delta^{(4)}\ast g'\left(z^{(3)}\right)$
+我们利用这个误差值来计算前一层的误差：$\delta^{(3)}=({\Theta^{(3)}})^{T}\delta^{(4)}\ast g'(z^{(3)})$
 其中 $g'(z^{(3)})$是 $S$ 形函数的导数，$g'(z^{(3)})=a^{(3)}\ast(1-a^{(3)})$。而$(θ^{(3)})^{T}\delta^{(4)}$则是权重导致的误差的和。下一步是继续计算第二层的误差：
 $ \delta^{(2)}=(\Theta^{(2)})^{T}\delta^{(3)}\ast g'(z^{(2)})$
 因为第一层是输入变量，不存在误差。我们有了所有的误差的表达式后，便可以计算代价函数的偏导数了，假设$λ=0$，即我们不做任何正则化处理时有：
@@ -90,3 +89,23 @@ Theta2 = reshape(thetaVec(111:220, 10, 11);
 
 Theta1 = reshape(thetaVec(221:231, 1, 11);
 ```
+
+
+
+前向传播算法：
+
+![](images/5778e97c411b23487881a87cfca781bb.png)
+
+![](images/63a0e4aef6d47ba7fa6e07088b61ae68.png)
+
+反向传播算法做的是：
+
+![](images/57aabbf26290e2082a00c5114ae1c5dc.png)
+
+![](images/1542307ad9033e39093e7f28d0c7146c.png)
+
+**感悟**：上图中的 $\delta^{(l)}_{j}="error" \ of cost \  for \ a^{(l)}_{j} \ (unit \ j \ in \ layer \ l)$ 理解如下：
+
+$\delta^{(l)}_{j}$ 相当于是第 $l$ 层的第 $j$ 单元中得到的激活项的“误差”，即”正确“的 $a^{(l)}_{j}$ 与计算得到的 $a^{(l)}_{j}$ 的差。
+
+而 $a^{(l)}_{j}=g(z^{(l)})$ ，（g为sigmoid函数）。我们可以想象 $\delta^{(l)}_{j}$ 为函数求导时迈出的那一丁点微分，所以更准确的说 $\delta^{(l)}_{j}=\frac{\partial}{\partial z^{(l)}_{j}}cost(i)$
